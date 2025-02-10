@@ -1,5 +1,3 @@
-import os
-import random
 from sklearn.model_selection import train_test_split
 from PIL import Image
 import numpy as np
@@ -8,21 +6,17 @@ from torch.utils.data import Dataset, DataLoader
 from datasets import load_dataset
 from transformers import AutoTokenizer
 
-# Load the WebSight dataset from Hugging Face
-dataset = load_dataset('Dataset card')
+dataset = load_dataset('HuggingFaceM4/Websight')
 
-# Split the dataset into training, validation, and test sets
 train_val_data, test_data = train_test_split(dataset['train'], test_size=0.1, random_state=42)
 train_data, val_data = train_test_split(train_val_data, test_size=0.1, random_state=42)
 
-# Normalize and augment the images if necessary
 def preprocess_image(image):
     image = Image.fromarray(image)
     image = image.resize((256, 256))
     image = np.array(image) / 255.0
     return image
 
-# Tokenize the HTML code
 tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 
 class WebSightDataset(Dataset):
@@ -48,7 +42,6 @@ train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
-# Save the loaders for later use
 torch.save(train_loader, 'train_loader.pt')
 torch.save(val_loader, 'val_loader.pt')
 torch.save(test_loader, 'test_loader.pt')
