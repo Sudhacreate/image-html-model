@@ -57,11 +57,11 @@ class ImageToHTMLModel(nn.Module):
         return out
 
 
-# Define the model
+
         vocab_size = len(tokenizer)
         model = ImageToHTMLModel(vocab_size=vocab_size)
 
-# Save the model architecture
+
         torch.save(model, 'image_to_html_model.pt')
 
 print("Model architecture is defined and saved.")
